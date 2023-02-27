@@ -1,10 +1,29 @@
 // By: Gonçalo Leão
 
 #include "exercises.h"
+#include <algorithm>
+#include <iostream>
+
+bool sortBy1st(std::pair<float,int> p1, std::pair<float,int> p2){
+    return (p1.first>p2.first);
+}
 
 unsigned int knapsackBF(unsigned int values[], unsigned int weights[], unsigned int n, unsigned int maxWeight, bool usedItems[]) {
-    // TODO
-    return 0;
+    std::vector<std::pair<float,int>> ratio;
+    for(int i = 0; i < n; i++){
+        ratio.push_back({(float)values[i]/(float)weights[i],i});
+    }
+    std::sort(ratio.begin(),ratio.end(), sortBy1st);
+    unsigned int bag = 0, value = 0;
+    for(auto i : ratio){
+        if(maxWeight>=(bag+weights[i.second])){
+            usedItems[i.second] = true;
+            bag+=weights[i.second];
+            value+=values[i.second];
+        }
+        else usedItems[i.second] = false;
+    }
+    return value;
 }
 
 /// TESTS ///
