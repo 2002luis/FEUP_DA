@@ -3,8 +3,11 @@
 #include "exercises.h"
 
 bool sum3(unsigned int T, unsigned int nums[3]) {
-    // TODO
-    return false;
+    if(T<=2) return false;
+    nums[0] = 1;
+    nums[1] = 1;
+    nums[2] = T-2;
+    return true;
 }
 
 /// TESTS ///

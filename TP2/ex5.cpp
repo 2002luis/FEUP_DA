@@ -4,7 +4,12 @@
 
 Result nearestPointsBF(std::vector<Point> &vp) {
     Result res;
-    // TODO
+
+    for(unsigned long int i = 0; i < vp.size(); i++){
+        for(unsigned long int j = i+1; j < vp.size(); j++){
+            if(res.dmin > vp[i].distance(vp[j])) res = {vp[i].distance(vp[j]),vp[i],vp[j]};
+        }
+    }
     return res;
 }
 
