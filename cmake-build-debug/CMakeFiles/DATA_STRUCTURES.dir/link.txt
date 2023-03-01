@@ -1,0 +1,2 @@
+C:\PROGRA~1\JETBRA~1\CLION2~1.1\bin\mingw\bin\ar.exe qc libDATA_STRUCTURES.a CMakeFiles/DATA_STRUCTURES.dir/data_structures/Graph.cpp.obj CMakeFiles/DATA_STRUCTURES.dir/data_structures/Heap.cpp.obj CMakeFiles/DATA_STRUCTURES.dir/data_structures/UFDS.cpp.obj CMakeFiles/DATA_STRUCTURES.dir/data_structures/VertexEdge.cpp.obj
+C:\PROGRA~1\JETBRA~1\CLION2~1.1\bin\mingw\bin\ranlib.exe libDATA_STRUCTURES.a

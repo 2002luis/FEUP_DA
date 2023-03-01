@@ -1,0 +1,2 @@
+C:\PROGRA~1\JETBRA~1\CLION2~1.1\bin\mingw\bin\ar.exe qc libCLOSEST_POINT_PAIR.a CMakeFiles/CLOSEST_POINT_PAIR.dir/running_examples/closest_point_pair/ClosestPointPair.cpp.obj
+C:\PROGRA~1\JETBRA~1\CLION2~1.1\bin\mingw\bin\ranlib.exe libCLOSEST_POINT_PAIR.a

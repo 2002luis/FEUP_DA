@@ -9,14 +9,17 @@ bool Activity::operator==(const Activity &a2) const {
 }
 
 bool Activity::operator<(const Activity &a2) const {
-    // TODO
-    return false;
+    return this->finish<a2.finish;
 }
 
 // Time: O(N*log(N)), Space: O(N), where N is the number of activities
 std::vector<Activity> activitySelectionGR(std::vector<Activity> A) {
     std::vector<Activity> selected;
-    // TODO
+    std::sort(A.begin(),A.end());
+    selected.push_back(A[0]);
+    for(unsigned long int i = 1; i < A.size(); i++){
+        if(A[i].start>=selected.back().finish) selected.push_back(A[i]);
+    }
     return selected;
 }
 
