@@ -1,7 +1,59 @@
 #include "exercises.h"
 
 void GreedyGraph::edmondsKarp(int source, int target) {
-    // TODO
+    auto src = this->findVertex(source);
+    auto dest = this->findVertex(target);
+    if(dest == nullptr || src == nullptr) return;
+
+    for(auto &i : this->vertexSet) for(auto &j : i->getAdj()) j->setFlow(0.0);
+
+
+}
+
+void GreedyGraph::bfs(Vertex* src, Vertex* dest){
+    for(auto &i : this->vertexSet)
+    {
+        i->setVisited(false);
+        i->setPath(nullptr);
+    }
+
+    std::queue<std::vector<std::pair<Vertex*,Edge*>>> q;
+    q.push({{src, nullptr}});
+    src->setVisited(true);
+    while(!q.empty()){
+        auto front = q.front();
+        if(front.back().first==dest){
+            for(unsigned long int i = 0; i < front.size(); i++){
+                front[i].first->setPath(front[i].second);
+            }
+            return;
+        }
+        for(auto &i : front.back().first->getAdj()){
+            if(!i->getDest()->isVisited()){
+                auto temp = front;
+                temp.back().second = i;
+                temp.push_back({i->getDest(), nullptr});
+                q.push(temp);
+            }
+        }
+        q.pop();
+    }
+
+    return;
+}
+
+double GreedyGraph::findMinResidual(std::vector<Vertex*> path){
+    double out = INT_MAX;
+    for(auto i : path){
+        out = std::min(out,i->getPath()->getWeight()-i->getPath()->getFlow());
+    }
+    return out;
+}
+
+void GreedyGraph::augmentFlow(std::vector<Vertex*> path, double n){
+    for (auto &i : path){
+        i->getPath()->setFlow(i->getPath()->getFlow()+n);
+    }
 }
 
 /// TESTS ///

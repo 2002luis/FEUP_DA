@@ -1,4 +1,4 @@
-"C:\Program Files\JetBrains\CLion 2022.2.1\bin\cmake\win\bin\cmake.exe" -DCMAKE_BUILD_TYPE=Debug -G "CodeBlocks - MinGW Makefiles" -S C:\Users\up202005832\Desktop\DA -B C:\Users\up202005832\Desktop\DA\cmake-build-debug
+"C:\Program Files\JetBrains\CLion 2022.2.1\bin\cmake\win\bin\cmake.exe" -DCMAKE_BUILD_TYPE=Debug -G "CodeBlocks - MinGW Makefiles" -S C:\Users\up202005832\Desktop\bruh -B C:\Users\up202005832\Desktop\bruh\cmake-build-debug
 -- The C compiler identification is GNU 11.2.0
 -- The CXX compiler identification is GNU 11.2.0
 -- Detecting C compiler ABI info
@@ -14,4 +14,4 @@
 -- Found Python: C:/Python310/python.exe (found version "3.10.9") found components: Interpreter 
 -- Configuring done
 -- Generating done
--- Build files have been written to: C:/Users/up202005832/Desktop/DA/cmake-build-debug
+-- Build files have been written to: C:/Users/up202005832/Desktop/bruh/cmake-build-debug
