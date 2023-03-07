@@ -51,8 +51,15 @@ void GreedyGraph::edmondsKarp(int source, int target) {
 
         Vertex* currSink = sink;
         for (Edge* e = currSink->getPath(); e != nullptr; e = currSink->getPath()){
-            pathFlow = std::min(pathFlow, e->getWeight() - e->getFlow());
-            currSink = (e->getDest() == currSink) ? e->getOrig() : e->getDest();
+            if (e->getDest() == currSink){
+                pathFlow = std::min(pathFlow, e->getWeight() - e->getFlow());
+                currSink = e->getOrig();
+
+                continue;
+            }
+
+            pathFlow = std::min(pathFlow, e->getFlow());
+            currSink = e->getDest();
         }
 
         currSink = sink;
@@ -65,52 +72,6 @@ void GreedyGraph::edmondsKarp(int source, int target) {
 
             e->setFlow(e->getFlow() - pathFlow); currSink = e->getDest();
         }
-    }
-}
-
-void GreedyGraph::bfs(Vertex* src, Vertex* dest){
-    for(auto &i : this->vertexSet)
-    {
-        i->setVisited(false);
-        i->setPath(nullptr);
-    }
-
-    std::queue<std::vector<std::pair<Vertex*,Edge*>>> q;
-    q.push({{src, nullptr}});
-    src->setVisited(true);
-    while(!q.empty()){
-        auto front = q.front();
-        if(front.back().first==dest){
-            for(unsigned long int i = 0; i < front.size(); i++){
-                front[i].first->setPath(front[i].second);
-            }
-            return;
-        }
-        for(auto &i : front.back().first->getAdj()){
-            if(!i->getDest()->isVisited()){
-                auto temp = front;
-                temp.back().second = i;
-                temp.push_back({i->getDest(), nullptr});
-                q.push(temp);
-            }
-        }
-        q.pop();
-    }
-
-    return;
-}
-
-double GreedyGraph::findMinResidual(std::vector<Vertex*> path){
-    double out = INT_MAX;
-    for(auto i : path){
-        out = std::min(out,i->getPath()->getWeight()-i->getPath()->getFlow());
-    }
-    return out;
-}
-
-void GreedyGraph::augmentFlow(std::vector<Vertex*> path, double n){
-    for (auto &i : path){
-        i->getPath()->setFlow(i->getPath()->getFlow()+n);
     }
 }
 

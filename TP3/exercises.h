@@ -39,9 +39,6 @@ public:
     void edmondsKarp(int source, int target);
 protected:
     // TODO: Add auxiliary methods if needed
-    std::vector<Vertex*> bfs(Vertex* src, Vertex* dest);
-    double findMinResidual(std::vector<Vertex*> path);
-    void augmentFlow(std::vector<Vertex*> path, double n);
 };
 
 #endif //DA_TP3_CLASSES_EXERCISES_H
