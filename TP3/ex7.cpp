@@ -1,13 +1,71 @@
 #include "exercises.h"
 
 void GreedyGraph::edmondsKarp(int source, int target) {
-    auto src = this->findVertex(source);
-    auto dest = this->findVertex(target);
-    if(dest == nullptr || src == nullptr) return;
+    for (Vertex* v : vertexSet){
+        for (Edge* e : v->getAdj())
+            e->setFlow(0);
+    }
 
-    for(auto &i : this->vertexSet) for(auto &j : i->getAdj()) j->setFlow(0.0);
+    Vertex* src = findVertex(source);
+    Vertex* sink = findVertex(target);
 
+    // BFS
+    while (true){
+        for (Vertex* v : vertexSet)
+            v->setPath(nullptr);
 
+        std::queue<Vertex*> q;
+        q.push(src);
+
+        while (!q.empty()){
+            Vertex* curr = q.front();
+            q.pop();
+
+            if (curr->getId() == target) break; // target found
+
+            // edges
+            for (Edge* e : curr->getAdj()){
+                Vertex* next = e->getDest();
+                if (next->getPath() != nullptr || e->getFlow() >= e->getWeight() || next->getId() == source)
+                    continue;
+
+                q.push(next);
+                next->setPath(e);
+            }
+
+            // reverse edges
+            for (Edge* e : curr->getIncoming()){
+                Vertex* next = e->getOrig();
+                if (next->getPath() != nullptr || e->getFlow() <= 0 || next->getId() == source)
+                    continue;
+
+                q.push(next);
+                next->setPath(e);
+            }
+        }
+
+        if (sink->getPath() == nullptr) break;
+
+        // augment path
+        double pathFlow = INF;
+
+        Vertex* currSink = sink;
+        for (Edge* e = currSink->getPath(); e != nullptr; e = currSink->getPath()){
+            pathFlow = std::min(pathFlow, e->getWeight() - e->getFlow());
+            currSink = (e->getDest() == currSink) ? e->getOrig() : e->getDest();
+        }
+
+        currSink = sink;
+        for (Edge* e = currSink->getPath(); e != nullptr; e = currSink->getPath()){
+            if (e->getDest() == currSink){
+                e->setFlow(e->getFlow() + pathFlow); currSink = e->getOrig();
+
+                continue;
+            }
+
+            e->setFlow(e->getFlow() - pathFlow); currSink = e->getDest();
+        }
+    }
 }
 
 void GreedyGraph::bfs(Vertex* src, Vertex* dest){
