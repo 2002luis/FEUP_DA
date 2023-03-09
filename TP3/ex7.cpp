@@ -9,70 +9,62 @@ void GreedyGraph::edmondsKarp(int source, int target) {
     Vertex* src = findVertex(source);
     Vertex* sink = findVertex(target);
 
+
     // BFS
-    while (true){
-        for (Vertex* v : vertexSet)
-            v->setPath(nullptr);
+    do {
+        for (Vertex* v : vertexSet) v->setPath(nullptr);
 
         std::queue<Vertex*> q;
         q.push(src);
 
-        while (!q.empty()){
-            Vertex* curr = q.front();
+        while(!q.empty() && q.front()->getId()!=target){
+            Vertex* cur = q.front();
             q.pop();
 
-            if (curr->getId() == target) break; // target found
-
-            // edges
-            for (Edge* e : curr->getAdj()){
-                Vertex* next = e->getDest();
-                if (next->getPath() != nullptr || e->getFlow() >= e->getWeight() || next->getId() == source)
-                    continue;
-
-                q.push(next);
-                next->setPath(e);
+            for(Edge* i : cur->getAdj()){
+                Vertex* next = i->getDest();
+                if(next->getPath() == nullptr && i->getFlow()<i->getWeight() && next->getId()!=source){
+                    q.push(next);
+                    next->setPath(i);
+                }
             }
 
-            // reverse edges
-            for (Edge* e : curr->getIncoming()){
-                Vertex* next = e->getOrig();
-                if (next->getPath() != nullptr || e->getFlow() <= 0 || next->getId() == source)
-                    continue;
-
-                q.push(next);
-                next->setPath(e);
+            for(Edge* i : cur->getIncoming()){
+                Vertex* next = i->getDest();
+                if(next->getPath() == nullptr && i->getFlow()>0 && next->getId() != source){
+                    q.push(next);
+                    next->setPath(i);
+                }
             }
         }
 
-        if (sink->getPath() == nullptr) break;
+        if(sink->getPath() != nullptr){
+            double flow = INF;
 
-        // augment path
-        double pathFlow = INF;
-
-        Vertex* currSink = sink;
-        for (Edge* e = currSink->getPath(); e != nullptr; e = currSink->getPath()){
-            if (e->getDest() == currSink){
-                pathFlow = std::min(pathFlow, e->getWeight() - e->getFlow());
-                currSink = e->getOrig();
-
-                continue;
+            Vertex* currSink = sink;
+            for(Edge* e = currSink->getPath(); e != nullptr; e = currSink->getPath()){
+                if(e->getDest() == currSink){
+                    flow = std::min(flow,e->getWeight() - e->getFlow());
+                    currSink = e->getOrig();
+                }
+                else{
+                    flow=std::min(flow,e->getFlow());
+                    currSink = e->getDest();
+                }
             }
 
-            pathFlow = std::min(pathFlow, e->getFlow());
-            currSink = e->getDest();
-        }
-
-        currSink = sink;
-        for (Edge* e = currSink->getPath(); e != nullptr; e = currSink->getPath()){
-            if (e->getDest() == currSink){
-                e->setFlow(e->getFlow() + pathFlow); currSink = e->getOrig();
-
-                continue;
+            for(Edge* e = currSink->getPath(); e != nullptr; e = currSink->getPath()){
+                if(e->getDest() == currSink) {
+                    e->setFlow(e->getFlow() + flow);
+                    currSink = e->getOrig();
+                }
+                else {
+                    e->setFlow(e->getFlow()-flow);
+                    currSink = e->getDest();
+                }
             }
-
-            e->setFlow(e->getFlow() - pathFlow); currSink = e->getDest();
         }
-    }
+    } while (sink->getPath() != nullptr);
 }
 
 /// TESTS ///
